@@ -4407,6 +4407,7 @@ $dokka.location:org.gradle.api/JavaVersion.VERSION_25///PointingToDeclaration/{"
 $dokka.location:org.gradle.api/JavaVersion.VERSION_26///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}gradle/org.gradle.api/-java-version/-v-e-r-s-i-o-n_26/index.html
 $dokka.location:org.gradle.api/JavaVersion.VERSION_27///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}gradle/org.gradle.api/-java-version/-v-e-r-s-i-o-n_27/index.html
 $dokka.location:org.gradle.api/JavaVersion.VERSION_28///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}gradle/org.gradle.api/-java-version/-v-e-r-s-i-o-n_28/index.html
+$dokka.location:org.gradle.api/JavaVersion.VERSION_29///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}gradle/org.gradle.api/-java-version/-v-e-r-s-i-o-n_29/index.html
 $dokka.location:org.gradle.api/JavaVersion.VERSION_HIGHER///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}gradle/org.gradle.api/-java-version/-v-e-r-s-i-o-n_-h-i-g-h-e-r/index.html
 $dokka.location:org.gradle.api/JavaVersion///PointingToDeclaration/gradle/org.gradle.api/-java-version/index.html
 $dokka.location:org.gradle.api/JavaVersion/current/#/PointingToDeclaration/gradle/org.gradle.api/-java-version/current.html

@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="releases\upgrading\upgrading_version_8.adoc">
+<meta name="adoc-src-path" content="releases/upgrading/upgrading_version_8.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Upgrading within Gradle 8.x</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -6590,7 +6619,7 @@ This means that if you return to an older version of Gradle, an 8.9-provisioned 
 <div class="sect3">
 <h4 id="change_the_encoding_of_daemon_log_files"><a class="anchor" href="#change_the_encoding_of_daemon_log_files"></a><a class="link" href="#change_the_encoding_of_daemon_log_files">Change the encoding of daemon log files</a></h4>
 <div class="paragraph">
-<p>In previous versions of Gradle, the daemon log file, located at <code>$<a href="directory_layout.html#dir:gradle_user_home">GRADLE_USER_HOME</a>/daemon/9.2.0-20250808161205+0000/</code>, was encoded with the default JVM encoding.
+<p>In previous versions of Gradle, the daemon log file, located at <code>$<a href="directory_layout.html#dir:gradle_user_home">GRADLE_USER_HOME</a>/daemon/9.2.0-20250809172047+0000/</code>, was encoded with the default JVM encoding.
 This file is now always encoded with UTF-8 to prevent clients who may use different default encodings from reading data incorrectly.
 This change may affect third-party tools trying to read this file.</p>
 </div>

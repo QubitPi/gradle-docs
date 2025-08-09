@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="developing-plugins\introduction\developing_binary_plugin_advanced.adoc">
+<meta name="adoc-src-path" content="developing-plugins/introduction/developing_binary_plugin_advanced.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Binary Plugin Development</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -5641,29 +5670,13 @@ gradlePlugin {  <i class="conum" data-value="3"></i><b>(3)</b>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="java">package org.example;
 
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.file.RegularFileProperty;
 
-import javax.inject.Inject;
+public interface FileSizeDiffExtension {
 
-public class FileSizeDiffExtension {
+    RegularFileProperty getFile1();
 
-    private final RegularFileProperty file1;
-    private final RegularFileProperty file2;
-
-    @Inject
-    public FileSizeDiffExtension(ObjectFactory objects) {
-        this.file1 = objects.fileProperty();
-        this.file2 = objects.fileProperty();
-    }
-
-    public RegularFileProperty getFile1() {
-        return file1;
-    }
-
-    public RegularFileProperty getFile2() {
-        return file2;
-    }
+    RegularFileProperty getFile2();
 }</code></pre>
 </div>
 </div>
@@ -5685,13 +5698,12 @@ public class FileSizeDiffExtension {
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.RegularFileProperty;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 
-import javax.inject.Inject;
+import java.nio.file.Files;
 import java.io.File;
 import java.io.IOException;
 
@@ -5705,11 +5717,6 @@ public abstract class FileSizeDiffTask extends DefaultTask {
 
     @OutputFile
     public abstract RegularFileProperty getResultFile();
-
-    @Inject
-    public FileSizeDiffTask(ObjectFactory objects) {
-        getResultFile().set(getProject().getLayout().getBuildDirectory().file("diff-result.txt"));
-    }
 
     @TaskAction
     public void diff() throws IOException {
@@ -5726,17 +5733,10 @@ public abstract class FileSizeDiffTask extends DefaultTask {
         }
 
         File result = getResultFile().get().getAsFile();
-        result.getParentFile().mkdirs();
-        writeText(result, output);
+        Files.writeString(result.toPath(), output);
 
         System.out.println(output);
         System.out.println("Wrote diff result to " + result.getAbsolutePath());
-    }
-
-    private void writeText(File file, String content) throws IOException {
-        try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
-            writer.write(content);
-        }
     }
 }</code></pre>
 </div>
@@ -5797,15 +5797,13 @@ public class FileSizeDiffPlugin implements Plugin&lt;Project&gt; {
     @Override
     public void apply(Project project) {
         // Register the extension
-        FileSizeDiffExtension extension = project.getExtensions().create("fileSizeDiff", FileSizeDiffExtension.class);
+        FileSizeDiffExtension extension = project.getExtensions().create("diff", FileSizeDiffExtension.class);
 
-        // Register the task
-        TaskProvider&lt;FileSizeDiffTask&gt; taskProvider = project.getTasks().register("fileSizeDiff", FileSizeDiffTask.class);
-
-        // Configure the task
-        taskProvider.configure( task -&gt; {
-            task.getFile1().set(extension.getFile1());
-            task.getFile2().set(extension.getFile2());
+        // Register and configure the task
+        project.getTasks().register("fileSizeDiff", FileSizeDiffTask.class, task -&gt; {
+            task.getFile1().convention(extension.getFile1());
+            task.getFile2().convention(extension.getFile2());
+            task.getResultFile().convention(project.getLayout().getBuildDirectory().file("diff-result.txt"));
         });
     }
 }</code></pre>
@@ -5821,12 +5819,12 @@ public class FileSizeDiffPlugin implements Plugin&lt;Project&gt; {
 <ol class="arabic">
 <li>
 <p><strong>Creates an extension named <code>filesizediff</code>:</strong>
-This allows users to configure the plugin using a <code>fileSizeDiff { &#8230;&#8203; }</code> block in their build script.
+This allows users to configure the plugin using a <code>diff {}</code> block in their build script.
 The configuration values are stored in an instance of <code>FileSizeDiffExtension</code>.</p>
 </li>
 <li>
 <p><strong>Registers a task of type <code>FileSizeDiffTask</code>:</strong>
-The task is given the name <code>fileSizeDiff</code>, and its properties (<code>file1</code> and <code>file2</code>) are mapped from the corresponding properties in the <code>fileSizeDiff</code> extension.
+The task is given the name <code>fileSizeDiff</code>, and its properties (<code>file1</code> and <code>file2</code>) are mapped from the corresponding properties in the <code>diff</code> extension.
 This ensures the task uses the values provided by the user in their build script.</p>
 </li>
 </ol>
@@ -5839,13 +5837,13 @@ This ensures the task uses the values provided by the user in their build script
 <div class="exampleblock testable-sample multi-language-sample">
 <div class="content">
 <div class="listingblock">
-<div class="title">consumer/build.gradle.kts</div>
+<div class="title">build.gradle.kts</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="kotlin">plugins {
     id("org.example.filesizediff")
 }
 
-fileSizeDiff {
+diff {
     file1 = file("a.txt")
     file2 = file("b.txt")
 }</code></pre>
@@ -5856,13 +5854,13 @@ fileSizeDiff {
 <div class="exampleblock testable-sample multi-language-sample">
 <div class="content">
 <div class="listingblock">
-<div class="title">consumer/build.gradle</div>
+<div class="title">build.gradle</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">plugins {
     id("org.example.filesizediff")
 }
 
-fileSizeDiff {
+diff {
     file1 = file('a.txt')
     file2 = file('b.txt')
 }</code></pre>

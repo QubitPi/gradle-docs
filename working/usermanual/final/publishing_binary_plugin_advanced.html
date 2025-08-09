@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="developing-plugins\introduction\publishing_binary_plugin_advanced.adoc">
+<meta name="adoc-src-path" content="developing-plugins/introduction/publishing_binary_plugin_advanced.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Binary Plugin Publishing</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -5507,14 +5536,14 @@ gradlePlugin {  <i class="conum" data-value="3"></i><b>(3)</b>
 </div>
 </div>
 <div class="paragraph">
-<p><code>group = "org.example"</code> sets the group ID of the plugin.</p>
+<p><code>group = "org.example"</code> sets the <strong>group</strong> ID of the plugin.</p>
 </div>
 <div class="paragraph">
-<p><code>version = "1.0.0"</code> sets the version of the plugin artifact.</p>
+<p><code>version = "1.0.0"</code> sets the <strong>version</strong> of the plugin artifact.</p>
 </div>
 <div class="paragraph">
 <p>The <code>gradlePlugin {}</code> block is part of the <code>java-gradle-plugin</code> and declares a binary plugin.
-It registers the full plugin name <code>org.example.filesizediff</code>, backed by a class called <code>FileDiffPlugin</code>.
+It registers the full plugin <strong>name</strong> <code>org.example.filesizediff</code>, backed by a class called <code>FileDiffPlugin</code>.
 This is the class that implements <code>Plugin&lt;Project&gt;</code> and defines what happens when the plugin is applied.</p>
 </div>
 </div>

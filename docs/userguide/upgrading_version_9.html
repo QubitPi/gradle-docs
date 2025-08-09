@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="releases\upgrading\upgrading_version_9.adoc">
+<meta name="adoc-src-path" content="releases/upgrading/upgrading_version_9.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Upgrading within Gradle 9.x.y</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -5466,7 +5495,7 @@ The previous step will help you identify potential problems by issuing deprecati
 </div>
 </li>
 <li>
-<p>Run <code>gradle wrapper --gradle-version 9.2.0-20250808161205+0000</code> to update the project to 9.2.0-20250808161205+0000.</p>
+<p>Run <code>gradle wrapper --gradle-version 9.2.0-20250809172047+0000</code> to update the project to 9.2.0-20250809172047+0000.</p>
 </li>
 <li>
 <p>Try to run the project and debug any errors using the <a href="troubleshooting.html#troubleshooting">Troubleshooting Guide</a>.</p>
@@ -5481,7 +5510,7 @@ The previous step will help you identify potential problems by issuing deprecati
 <div class="sect2">
 <h3 id="deprecations"><a class="anchor" href="#deprecations"></a><a class="link" href="#deprecations">Deprecations</a></h3>
 <div class="sect3">
-<h4 id="dependency_multi_string_notation"><a class="anchor" href="#dependency_multi_string_notation"></a><a class="link" href="#dependency_multi_string_notation">Deprecated multi-string dependency notation</a></h4>
+<h4 id="dependency_multi_string_notation"><a class="anchor" href="#dependency_multi_string_notation"></a><a class="link" href="#dependency_multi_string_notation">Deprecation of multi-string dependency notation</a></h4>
 <div class="paragraph">
 <p>In an effort to simplify and standardize the Gradle API, the multi-string dependency notation used in dependency management has been deprecated and will no longer be permitted in Gradle 10.
 Gradle will primarily accept dependency declarations in the form of a single string, with each dependency coordinate separated by a colon.</p>
@@ -5635,7 +5664,7 @@ configurations.dependencyScope("implementation") {
 <p>The <a href="../javadoc/org/gradle/api/reporting/ReportingExtension.html#file(String)"><code>file()</code> method</a> on <code>ReportingExtension</code> has been deprecated and will be removed in Gradle 10.0.0.</p>
 </div>
 <div class="paragraph">
-<p>Use <code>ReportingExtension.getBaseDirectory()</code> with <code>file(String)</code> or <code>dir(String)</code> instead.</p>
+<p>Instead, use <code>ReportingExtension.getBaseDirectory()</code> with <code>file(String)</code> or <code>dir(String)</code>.</p>
 </div>
 </div>
 <div class="sect3">
@@ -5670,7 +5699,7 @@ configurations.dependencyScope("implementation") {
 </div>
 </div>
 <div class="sect3">
-<h4 id="archives-configuration"><a class="anchor" href="#archives-configuration"></a><a class="link" href="#archives-configuration">Deprecated <code>archives</code> configuration</a></h4>
+<h4 id="archives-configuration"><a class="anchor" href="#archives-configuration"></a><a class="link" href="#archives-configuration">Deprecation of <code>archives</code> configuration</a></h4>
 <div class="paragraph">
 <p>The <code>archives</code> configuration added by the <a href="base_plugin.html#base_plugin"><code>base</code> plugin</a> has been deprecated and will be removed in Gradle 10.0.0.
 Adding artifacts to the <code>archives</code> configuration will now result in a deprecation warning.</p>
@@ -5693,7 +5722,7 @@ tasks.named("assemble") {
 </div>
 </div>
 <div class="sect3">
-<h4 id="deprecate-visible-property"><a class="anchor" href="#deprecate-visible-property"></a><a class="link" href="#deprecate-visible-property">Deprecated <code>Configuration.visible</code> property</a></h4>
+<h4 id="deprecate-visible-property"><a class="anchor" href="#deprecate-visible-property"></a><a class="link" href="#deprecate-visible-property">Deprecation of the <code>Configuration.visible</code> property</a></h4>
 <div class="paragraph">
 <p>Prior to Gradle 9.0.0, any configuration with <code>isVisible()</code> returning <code>true</code> would implicitly trigger artifact creation when running the <code>assemble</code> task.
 This behavior was removed in Gradle 9.0.0, and the <code>Configuration.visible</code> property no longer has any effect.
@@ -5724,14 +5753,14 @@ tasks.named("assemble") {
 </div>
 </div>
 <div class="sect3">
-<h4 id="deprecated-gradle-build-non-string-properties"><a class="anchor" href="#deprecated-gradle-build-non-string-properties"></a><a class="link" href="#deprecated-gradle-build-non-string-properties">Non-String project properties in <code>GradleBuild</code> task</a></h4>
+<h4 id="deprecated-gradle-build-non-string-properties"><a class="anchor" href="#deprecated-gradle-build-non-string-properties"></a><a class="link" href="#deprecated-gradle-build-non-string-properties">Deprecation of non-string <code>projectProperties</code> in <code>GradleBuild</code> task</a></h4>
 <div class="paragraph">
 <p>The <code>GradleBuild</code> task now deprecates using non-String values in <code>startParameter.projectProperties</code>.
 While the type is declared as <code>Map&lt;String, String&gt;</code>, there was no strict enforcement, allowing non-String values to be set.
 This deprecated behavior will be removed in Gradle 10.0.0.</p>
 </div>
 <div class="paragraph">
-<p>If you are using non-String values in project properties, convert them to String representation:</p>
+<p>If you are using non-String values in project properties, convert them to <code>String</code> representation:</p>
 </div>
 <div class="exampleblock">
 <div class="content">
@@ -5769,7 +5798,18 @@ tasks.register('nestedBuild', GradleBuild) {
 </div>
 <div class="sect2">
 <h3 id="potential_breaking_changes"><a class="anchor" href="#potential_breaking_changes"></a><a class="link" href="#potential_breaking_changes">Potential breaking changes</a></h3>
-
+<div class="sect3">
+<h4 id="upgrade_to_asm_9_8"><a class="anchor" href="#upgrade_to_asm_9_8"></a><a class="link" href="#upgrade_to_asm_9_8">Upgrade to ASM 9.8</a></h4>
+<div class="paragraph">
+<p>ASM was upgraded from 9.7.1 to <a href="https://asm.ow2.io/versions.html">9.8</a> to ensure earlier compatibility for Java 25.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="upgrade_to_groovy_4_0_28"><a class="anchor" href="#upgrade_to_groovy_4_0_28"></a><a class="link" href="#upgrade_to_groovy_4_0_28">Upgrade to Groovy 4.0.28</a></h4>
+<div class="paragraph">
+<p>Groovy has been updated to <a href="https://groovy-lang.org/changelogs/changelog-4.0.28.html">Groovy 4.0.28</a>.</p>
+</div>
+</div>
 </div>
 </div>
 </div>

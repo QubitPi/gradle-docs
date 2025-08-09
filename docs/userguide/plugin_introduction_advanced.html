@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="developing-plugins\introduction\plugin_introduction_advanced.adoc">
+<meta name="adoc-src-path" content="developing-plugins/introduction/plugin_introduction_advanced.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Plugin Introduction</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -5445,7 +5474,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <p><strong>Plugins</strong> lets you <strong>extend and organize build logic</strong> in a modular and reusable way.</p>
 </div>
 <div class="paragraph">
-<p>You apply plugins using the plugins block:</p>
+<p>You <strong>apply</strong> plugins using the plugins block:</p>
 </div>
 <div class="exampleblock">
 <div class="content">
@@ -5476,7 +5505,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </div>
 </div>
 <div class="paragraph">
-<p>When you apply a plugin, it typically does one or both of the following:</p>
+<p>When you <strong>apply</strong> a plugin, it typically does one or both of the following:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">

@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="developing-plugins\introduction\testing_binary_plugin_advanced.adoc">
+<meta name="adoc-src-path" content="developing-plugins/introduction/testing_binary_plugin_advanced.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Binary Plugin Testing</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -5517,7 +5546,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 id="1_unit_test"><a class="anchor" href="#1_unit_test"></a><a class="link" href="#1_unit_test">1. Unit Test</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Unit tests validate the internal behavior of your plugin in a lightweight, isolated project.
+<p><strong>Unit tests</strong> validate the internal behavior of your plugin in a lightweight, isolated project.
 These tests simulate applying your plugin without needing a full Gradle execution.</p>
 </div>
 <div class="paragraph">
@@ -5570,7 +5599,7 @@ class FileSizeDiffPluginTest {
 <h2 id="2_functional_test"><a class="anchor" href="#2_functional_test"></a><a class="link" href="#2_functional_test">2. Functional Test</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Functional tests (also known as end-to-end plugin tests) use Gradle&#8217;s <a href="test_kit.html#test_kit"><code>TestKit</code></a> to launch real Gradle builds in a temporary directory.
+<p><strong>Functional tests</strong> (also known as end-to-end plugin tests) use Gradle&#8217;s <a href="test_kit.html#test_kit"><code>TestKit</code></a> to launch real Gradle builds in a temporary directory.
 This is how you verify your plugin works correctly in real-world usage.</p>
 </div>
 <div class="paragraph">
@@ -5605,11 +5634,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
+import java.nio.file.Files;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileSizeDiffPluginFunctionalTest {
     // Temporary directory for each test, automatically cleaned up after the test run
@@ -5631,16 +5660,18 @@ public class FileSizeDiffPluginFunctionalTest {
     void setup() throws IOException {
         // Empty settings.gradle
         writeString(getSettingsFile(), "");
+
         // Apply the plugin and configure the extension in build.gradle
-        writeString(getBuildFile(),
-            "plugins {\n" +
-                "  id('org.example.filesizediff')\n" +
-                "}\n" +
-                "\n" +
-                "fileSizeDiff {\n" +
-                "  file1 = file('a.txt')\n" +
-                "  file2 = file('b.txt')\n" +
-                "}");
+        writeString(getBuildFile(), """
+            plugins {
+                id("org.example.filesizediff")
+            }
+            diff {
+                file1 = file("a.txt")
+                file2 = file("b.txt")
+            }
+        """
+        );
     }
 
     // Test case: both input files have the same size (empty)
@@ -5653,10 +5684,10 @@ public class FileSizeDiffPluginFunctionalTest {
 
         // Run the build with the plugin classpath and invoke the fileSizeDiff task
         BuildResult result = GradleRunner.create()
-            .withProjectDir(projectDir)
-            .withPluginClasspath()
-            .withArguments("fileSizeDiff")
-            .build();
+                .withProjectDir(projectDir)
+                .withPluginClasspath()
+                .withArguments("fileSizeDiff")
+                .build();
 
         // Verify the output message and successful task result
         assertTrue(result.getOutput().contains("Files have the same size"));
@@ -5673,10 +5704,10 @@ public class FileSizeDiffPluginFunctionalTest {
 
         // Run the build and invoke the plugin task
         BuildResult result = GradleRunner.create()
-            .withProjectDir(projectDir)
-            .withPluginClasspath()
-            .withArguments("fileSizeDiff")
-            .build();
+                .withProjectDir(projectDir)
+                .withPluginClasspath()
+                .withArguments("fileSizeDiff")
+                .build();
 
         // Verify the output message indicates a.txt is larger
         assertTrue(result.getOutput().contains("a.txt was larger: 7 bytes"));
@@ -5684,10 +5715,8 @@ public class FileSizeDiffPluginFunctionalTest {
     }
 
     // Helper method to write string content to a file
-    private void writeString(File file, String string) throws IOException {
-        try (Writer writer = new FileWriter(file)) {
-            writer.write(string);
-        }
+    private static void writeString(File file, String string) throws IOException {
+        Files.writeString(file.toPath(), string);
     }
 }</code></pre>
 </div>
@@ -5847,7 +5876,7 @@ tasks.named('test', Test) {
 <h2 id="consumer_project"><a class="anchor" href="#consumer_project"></a><a class="link" href="#consumer_project">Consumer Project</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can optionally create a consumer project that consumes your plugin:</p>
+<p>You can optionally create a consumer project that uses your plugin:</p>
 </div>
 <div class="exampleblock">
 <div class="content">
@@ -5856,9 +5885,9 @@ tasks.named('test', Test) {
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="kotlin">.
-├── consumer
-│   ├── settings.gradle.kts // Include custom plugin
-│   └── build.gradle.kts    // Applies custom plugin
+├── settings.gradle.kts // Include custom plugin
+├── build.gradle.kts    // Applies custom plugin
+│
 └── plugin
     ├── settings.gradle.kts
     ├── build.gradle.kts
@@ -5873,9 +5902,9 @@ tasks.named('test', Test) {
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">.
-├── consumer
-│   ├── settings.gradle // Include custom plugin
-│   └── build.gradle    // Applies custom plugin
+├── settings.gradle.kts // Include custom plugin
+├── build.gradle.kts    // Applies custom plugin
+│
 └── plugin
     ├── settings.gradle
     ├── build.gradle
@@ -5895,17 +5924,11 @@ tasks.named('test', Test) {
 <div class="exampleblock testable-sample multi-language-sample">
 <div class="content">
 <div class="listingblock">
-<div class="title">consumer/settings.gradle.kts</div>
+<div class="title">settings.gradle.kts</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="kotlin">rootProject.name = "consumer"
 
-pluginManagement {
-    includeBuild("../plugin") // path to the plugin project
-
-    repositories {
-        gradlePluginPortal() // optional fallback
-    }
-}</code></pre>
+includeBuild("plugin")</code></pre>
 </div>
 </div>
 </div>
@@ -5913,17 +5936,11 @@ pluginManagement {
 <div class="exampleblock testable-sample multi-language-sample">
 <div class="content">
 <div class="listingblock">
-<div class="title">consumer/settings.gradle</div>
+<div class="title">settings.gradle</div>
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="groovy">pluginManagement {
-    includeBuild("../plugin") // path to the plugin project
+<pre class="prettyprint highlight"><code data-lang="groovy">rootProject.name = 'consumer'
 
-    repositories {
-        gradlePluginPortal() // optional fallback
-    }
-}
-
-rootProject.name = "consumer"</code></pre>
+includeBuild("plugin")</code></pre>
 </div>
 </div>
 </div>
@@ -5938,13 +5955,13 @@ rootProject.name = "consumer"</code></pre>
 <div class="exampleblock testable-sample multi-language-sample">
 <div class="content">
 <div class="listingblock">
-<div class="title">consumer/build.gradle.kts</div>
+<div class="title">build.gradle.kts</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="kotlin">plugins {
     id("org.example.filesizediff")
 }
 
-fileSizeDiff {
+diff {
     file1 = file("a.txt")
     file2 = file("b.txt")
 }</code></pre>
@@ -5955,13 +5972,13 @@ fileSizeDiff {
 <div class="exampleblock testable-sample multi-language-sample">
 <div class="content">
 <div class="listingblock">
-<div class="title">consumer/build.gradle</div>
+<div class="title">build.gradle</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">plugins {
     id("org.example.filesizediff")
 }
 
-fileSizeDiff {
+diff {
     file1 = file('a.txt')
     file2 = file('b.txt')
 }</code></pre>
@@ -5978,11 +5995,11 @@ fileSizeDiff {
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="bash">$ ./gradlew fileSizeDiff
 
-&gt; Task :consumer:fileSizeDiff
+&gt; Task :fileSizeDiff
 Files have the same size: 0 bytes
-Wrote diff result to /Users/lkassovic/Documents/Repositories/temp/plugin/consumer/build/diff-result.txt
+Wrote diff result to /home/user/gradle/samples/build/diff-result.txt
 
-BUILD SUCCESSFUL in 134ms</code></pre>
+BUILD SUCCESSFUL in 0s</code></pre>
 </div>
 </div>
 <div class="paragraph text-right">

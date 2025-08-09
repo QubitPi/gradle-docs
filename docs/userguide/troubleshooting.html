@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="unused\troubleshooting.adoc">
+<meta name="adoc-src-path" content="unused/troubleshooting.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Troubleshooting builds</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -5470,7 +5499,7 @@ Build time:    2025-05-13 06:56:13 UTC
 Revision:      3c890746756262d3778e12eaa5155d661d7cbdf2
 
 Kotlin:        2.1.21
-Groovy:        4.0.27
+Groovy:        4.0.28
 Ant:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024
 Launcher JVM:  22.0.1 (Oracle Corporation 22.0.1+8-16)
 Daemon JVM:    Compatible with Java 17, any vendor, nativeImageCapable=false (from gradle/gradle-daemon-jvm.properties)
@@ -5604,7 +5633,7 @@ You can also <a href="logging.html#sec:external_tools">control logging from exte
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Additional logs from the <a href="gradle_daemon.html#gradle_daemon">Gradle Daemon</a> can be found under <code>$<a href="directory_layout.html#dir:gradle_user_home">GRADLE_USER_HOME</a>/daemon/9.2.0-20250808161205+0000/</code>.
+Additional logs from the <a href="gradle_daemon.html#gradle_daemon">Gradle Daemon</a> can be found under <code>$<a href="directory_layout.html#dir:gradle_user_home">GRADLE_USER_HOME</a>/daemon/9.2.0-20250809172047+0000/</code>.
 </td>
 </tr>
 </table>

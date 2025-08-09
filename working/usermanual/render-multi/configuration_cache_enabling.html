@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="optimizing-builds\configuration-cache\configuration_cache_enabling.adoc">
+<meta name="adoc-src-path" content="optimizing-builds/configuration-cache/configuration_cache_enabling.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Enabling and Configuring the Configuration Cache</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -5575,6 +5604,46 @@ Enabling parallel storing and loading can improve performance, but not all build
 <p>The parallel configuration caching feature is <em>incubating</em>, and some builds may not work correctly.
 A common symptom of incompatibility is <code>ConcurrentModificationException</code> errors during the <a href="build_lifecycle_intermediate.html#sec:configuration">configuration phase</a>.
 However, this feature is expected to work well for <a href="multi_project_configuration_and_execution.html#sec:decoupled_projects">decoupled</a> multi-project builds.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="config_cache:usage:read_only"><a class="anchor" href="#config_cache:usage:read_only"></a><a class="link" href="#config_cache:usage:read_only">Making the Configuration Cache Read-Only</a></h3>
+<div class="paragraph">
+<p>In some builds, such as CI builds running in ephemeral environments, it may be desirable for Gradle to use the Configuration Cache only when there&#8217;s a cache hit.
+If there&#8217;s a miss, caching offers no benefit since the disk state won&#8217;t be preserved across builds.</p>
+</div>
+<div class="paragraph">
+<p>To enable read-only configuration caching at build time, use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="text">❯ ./gradlew -Dorg.gradle.configuration-cache.read-only=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or set it persistently in <code>gradle.properties</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="properties">org.gradle.configuration-cache.read-only=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that if you enable this persistently, you&#8217;ll need to explicitly disable it via the command line in order for Gradle to ever write to the configuration cache.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The read-only configuration caching feature is <em>incubating</em>.</p>
 </div>
 </td>
 </tr>

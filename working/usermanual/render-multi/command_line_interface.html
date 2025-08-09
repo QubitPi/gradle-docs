@@ -4616,10 +4616,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="reference\runtime-configuration\command_line_interface.adoc">
+<meta name="adoc-src-path" content="reference/runtime-configuration/command_line_interface.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5424,7 +5453,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Command-Line Interface</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -6256,7 +6285,7 @@ By default, no host address is passed to JDWP, so on Java 9 and above, the loopb
 <p>Set to <code>fail</code> to report problems and fail the build if there are any problems.</p>
 </div>
 </dd>
-<dt class="hdlist1"><code>--configure-on-demand</code>, <code>--no-configure-on-demand</code></dt>
+<dt class="hdlist1"><code>--configure-on-demand</code>, <code>--no-configure-on-demand</code> <span class="incubating-label">Incubating</span></dt>
 <dd>
 <p>Toggles configure-on-demand. Only relevant projects are configured in this build run. <em>Default is off</em>.</p>
 </dd>
@@ -6402,13 +6431,15 @@ When enabled, Gradle reuses information it collects about the file system betwee
 <h3 id="sec:command_line_problems"><a class="anchor" href="#sec:command_line_problems"></a><a class="link" href="#sec:command_line_problems">Reporting problems</a></h3>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>--no-problems-report</code></dt>
+<dt class="hdlist1"><code>--problems-report</code> (enabled by default) <span class="incubating-label">Incubating</span></dt>
+<dd>
+<p>Enable the generation of <code>build/reports/problems-report.html</code>.
+This is the default behaviour.
+The report is generated with problems provided to the <a href="reporting_problems.html#sec:reporting_problems">Problems API</a>.</p>
+</dd>
+<dt class="hdlist1"><code>--no-problems-report</code> <span class="incubating-label">Incubating</span></dt>
 <dd>
 <p>Disable the generation of <code>build/reports/problems-report.html</code>, by default this report is generated with problems provided to the <a href="reporting_problems.html#sec:reporting_problems">Problems API</a>.</p>
-</dd>
-<dt class="hdlist1"><code>--problems-report</code></dt>
-<dd>
-<p>Enable the generation of <code>build/reports/problems-report.html</code>. This is the default behaviour. The report is generated with problems provided to the <a href="reporting_problems.html#sec:reporting_problems">Problems API</a>.</p>
 </dd>
 </dl>
 </div>
@@ -6508,13 +6539,9 @@ When enabled, Gradle reuses information it collects about the file system betwee
 <dd>
 <p>Run Gradle with all task actions disabled. Use this to show which task would have executed.</p>
 </dd>
-<dt class="hdlist1"><code>--task-graph</code></dt>
+<dt class="hdlist1"><code>--task-graph</code> <span class="since-gradle-label">Since 9.1.0</span> <span class="incubating-label">Incubating</span></dt>
 <dd>
-<p><em>Incubating.</em>
-<em>Since Gradle 9.1.0</em></p>
-<div class="paragraph">
 <p>Run Gradle with all task actions disabled and print the task dependency graph.</p>
-</div>
 </dd>
 <dt class="hdlist1"><code>-t</code>, <code>--continuous</code></dt>
 <dd>

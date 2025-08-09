@@ -4615,10 +4615,39 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 
+/* Feature Status Labels */
+
+.incubating-label,
+.since-gradle-label {
+    display: inline-block;
+
+    /* better center vertically on the line */
+    position: relative;
+    top: -1px;
+
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--code-text-color);
+    font-weight: normal;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.since-gradle-label {
+    background-color: var(--code-color);
+}
+
+.incubating-label {
+    /* use the warning color with 20% opacity */
+    background-color: rgb(from var(--warning-color) r g b / 0.2);
+}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
-<meta name="adoc-src-path" content="releases\compatibility.adoc">
+<meta name="adoc-src-path" content="releases/compatibility.adoc">
 <link crossorigin href="//assets.gradle.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"/>
 
@@ -5423,7 +5452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="header">
 <h1>Compatibility Matrix</h1>
 <div class="details">
-<span id="revnumber">version 9.2.0-20250808161205+0000</span>
+<span id="revnumber">version 9.2.0-20250809172047+0000</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Contents</div>
@@ -5570,6 +5599,11 @@ Support is achieved using <a href="toolchains.html#toolchains">toolchains</a> an
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9.1.0 and after</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
 </tr>
@@ -5761,7 +5795,7 @@ Beta and RC versions may or may not work.</p>
 <h2 id="groovy"><a class="anchor" href="#groovy"></a><a class="link" href="#groovy">Groovy</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Gradle is tested with Groovy 1.5.8 through 4.0.27.</p>
+<p>Gradle is tested with Groovy 1.5.8 through 4.0.28.</p>
 </div>
 <div class="paragraph">
 <p>Gradle plugins written in Groovy must use Groovy 4.x for compatibility with Gradle and Groovy DSL build scripts.</p>
@@ -5772,7 +5806,7 @@ Beta and RC versions may or may not work.</p>
 <h2 id="android"><a class="anchor" href="#android"></a><a class="link" href="#android">Android</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Gradle is tested with Android Gradle Plugin 8.4 through 8.11.
+<p>Gradle is tested with Android Gradle Plugin 8.4 through 8.12.
 Alpha and beta versions may or may not work.</p>
 </div>
 </div>
